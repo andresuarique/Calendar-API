@@ -2,21 +2,10 @@ import { Sequelize } from "sequelize";
 import { config } from "./../config/config.js";
 import { setupModels } from "../database/models/index.js";
 
-const options = {
+const sequelize = new Sequelize(config.dbUrl, {
   dialect: 'postgres',
-  logging: config.isProd ? false : true,
-}
-
-if (config.isProd) {
-  options.dialectOptions = {
-    ssl: {
-      rejectUnauthorized: false
-    }
-  }
-}
-console.log("libs:"+config.dbUrl);
-
-const sequelize = new Sequelize(config.dbUrl, options);
+  logging: true,
+});
 
 setupModels(sequelize);
 
