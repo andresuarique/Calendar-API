@@ -4,39 +4,40 @@ import { UsersService } from '../services/user.service.js';
 const usersRouter = express.Router();
 const usersService = new UsersService();
 
-usersRouter.get('/', (req, res) =>{
-    const users = usersService.find();
-    res.json(users);
+usersRouter.get('/', async (req, res) =>{
+    const users = await usersService.find();
+    res.status(200).json(users);
 });
 
-usersRouter.get('/:id', (req, res) =>{
+usersRouter.get('/:id', async (req, res) =>{
     const { id } = req.params;
-    const user = usersService.findOne(id);
-    res.json(user);
+    const user = await usersService.findOne(id);
+    res.status(200).json(user);
 });
 
-usersRouter.post('/', (req, res) =>{
+usersRouter.post('/', async (req, res) =>{
     const body = req.body;
-    const user = usersService.create(body);
-    res.json(user);
+    const user = await usersService.create(body);
+    res.status(200).json(user);
 });
 
-usersRouter.post('/login', (req, res) =>{
+usersRouter.post('/login', async (req, res) =>{
     const body = req.body;
 
-    res.json(user);
+    res.status(200).json(user);
 });
 
-usersRouter.put('/:id', (req, res) =>{
+usersRouter.patch('/:id', async (req, res) =>{
+    const {id} = req.params;
     const body = req.body;
-    const user = usersService.update(body);
-    res.json(user);
+    const user = await usersService.update(id,body);
+    res.status(200).json(user);
 });
 
-usersRouter.delete('/:id', (req, res) =>{
+usersRouter.delete('/:id', async (req, res) =>{
     const { id } = req.params;
-    const user = usersService.delete(id);
-    res.json("ok");
+    const user = await usersService.delete(id);
+    res.status(200).json(user);
 });
 
 
