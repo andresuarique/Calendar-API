@@ -1,4 +1,5 @@
 import { Model, DataTypes, Sequelize } from "sequelize";
+import  boom from "@hapi/boom";
 
 const USER_TABLE = 'users';
 const USER_MODEL = 'User';
