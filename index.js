@@ -2,6 +2,7 @@ import express from 'express';
 import {routerApi} from './src/routes/index.js';
 import { config } from './src/config/config.js';
 import { logErrors, errorHandler, boomErrorHandler, ormErrorHandler }  from './src/middlewares/error.handler.js';
+import './src/utils/auth/index.js';
 const app = express();
 
 const port = config.port;

@@ -1,5 +1,6 @@
 import { models } from '../libs/sequelize.js';
 import  boom  from "@hapi/boom";
+import bcrypt from 'bcrypt';
 
 class UsersService{
 
@@ -8,7 +9,12 @@ constructor(){
 }
 
     async create(body){
-        const user = await models.User.create(body);
+        const hash = await bcrypt.hash(body.password,10);
+        const user = await models.User.create({
+            ...body,
+            password: hash
+        });
+        delete user.dataValues.password;
         return user;
     }
 
@@ -36,6 +42,13 @@ constructor(){
         const user = await this.findOne(id);
         const rta = await user.destroy();
         return {id};
+    }
+
+    async findByEmail( email ){
+        const rta = await models.User.findOne({
+            where: { email }
+        });
+        return rta;
     }
 }
 

@@ -11,5 +11,7 @@ const config = {
 	dbPort: process.env.POSTGRES_PORT,
 	dbName: process.env.POSTGRES_DB,
 	dbUrl: process.env.POSTGRES_URL,
+	apiKey: process.env.API_KEY,
+	jwtSecret: process.env.JWT_SECRET,
 };
 export { config };
