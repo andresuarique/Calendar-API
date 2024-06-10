@@ -27,7 +27,7 @@ usersRouter.post('/', async (req, res, next) =>{
     try{
         const body = req.body;
         const user = await usersService.create(body);
-        res.status(200).json(user);
+        res.status(201).json(user);
     }catch(error){
         next(error);
     }
