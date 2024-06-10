@@ -1,7 +1,7 @@
 import { Model, DataTypes, Sequelize } from "sequelize";
 
 const USER_TABLE = 'users';
-const USER_MODEL = 'user';
+const USER_MODEL = 'User';
 
 const UserSchema = {
     id:{
@@ -41,8 +41,7 @@ class User extends Model {
             sequelize,
             tableName: USER_TABLE,
             modelName: USER_MODEL,
-            timestamps: false,
-            modelName: 'User'
+            timestamps: false
 
         }
     }

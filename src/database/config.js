@@ -14,4 +14,4 @@ const dbConfig = {
     }
 };
 
-export default dbConfig;
+export  {dbConfig};
