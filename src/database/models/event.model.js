@@ -3,7 +3,7 @@ import  boom from "@hapi/boom";
 import { USER_TABLE } from "./user.model.js";
 
 const EVENT_TABLE = 'events';
-const EVENT_MODEL = 'event';
+const EVENT_MODEL = 'Event';
 
 const EventSchema ={
     id:{
@@ -28,25 +28,23 @@ const EventSchema ={
         type: DataTypes.STRING
     },
     description:{
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.STRING
     },
     startDate:{
         allowNull: false,
         type: DataTypes.DATE,
         field: 'start_date',
-        defaultValue: Sequelize.NOW
     },
     endDate:{
         allowNull: false,
         type: DataTypes.DATE,
         field: 'end_date',
-        defaultValue: Sequelize.NOW
     },
     isPublic:{
         allowNull: false,
         type: DataTypes.BOOLEAN,
-        field: 'end_date',
+        field: 'id_public',
         defaultValue: true
     },
     createdAt:{
