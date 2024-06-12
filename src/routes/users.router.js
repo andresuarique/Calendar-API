@@ -29,7 +29,6 @@ usersRouter.get('/:id',
 });
 
 usersRouter.post('/',
-    passport.authenticate('jwt', {session: false}),
     async (req, res, next) =>{
     try{
         const body = req.body;
