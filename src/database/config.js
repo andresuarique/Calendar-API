@@ -2,7 +2,6 @@ import dotenv from 'dotenv';
 dotenv.config();
 import { config } from "../config/config.js";
 
-
 const dbConfig = {
     development: {
         url: config.dbUrl,
@@ -14,4 +13,4 @@ const dbConfig = {
     }
 };
 
-export  {dbConfig};
+export  default dbConfig;

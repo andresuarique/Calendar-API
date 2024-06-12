@@ -29,12 +29,15 @@ const UserSchema = {
         type: DataTypes.DATE,
         field: 'created_at',
         defaultValue: Sequelize.NOW
-    }
-}
+    },
+};
 
 class User extends Model {
-    static associate(){
-        //associate
+    static associate(models){
+        this.hasMany(models.Events,{
+            as: 'events',
+            foreignKey: 'userId'
+        });
     }
 
     static config (sequelize){
@@ -43,8 +46,7 @@ class User extends Model {
             tableName: USER_TABLE,
             modelName: USER_MODEL,
             timestamps: false
-
         }
-    }
+    }    
 }
 export { USER_TABLE, UserSchema, User };
