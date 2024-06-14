@@ -7,19 +7,28 @@ class EventsService{
     }
     async create(body){
         const event = await models.Event.create(body);
+        delete event.dataValues.user.dataValues.password;
         return event;
     }
 
     async find(){
-        const rta = await models.Event.findAll();
+        const rta = await models.Event.findAll({
+            include: ['user']
+        });
+        const newRta = rta.map(event =>{
+            delete event.dataValues.user.dataValues.password;
+        });
         return rta;
     }
 
     async findOne(id){
-        const rta = await models.Event.findByPk(id);
+        const rta = await models.Event.findByPk(id,{
+            include: ['user']
+        });
         if (!rta) {
             throw boom.notFound('event not found');
           }
+        delete rta.dataValues.user.dataValues.password;
         return rta;
     }
 
