@@ -5,7 +5,6 @@ import bcrypt from 'bcrypt';
 class UsersService{
 
 constructor(){
-    this.users= [];
 }
 
     async create(body){
