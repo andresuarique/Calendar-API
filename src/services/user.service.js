@@ -36,9 +36,13 @@ constructor(){
 
     async update(id, body){
         const user = await this.findOne(id);
-        const rta = await user.update(body);
-        return rta;
-
+        if (body.password) {
+            const hash = await bcrypt.hash(body.password, 10);
+            body.password = hash;
+        } 
+        const updatedUser = await user.update(body);
+        delete updatedUser.dataValues.password;
+        return updatedUser;              
     }
 
     async delete(id){

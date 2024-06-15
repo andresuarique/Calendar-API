@@ -39,26 +39,26 @@ usersRouter.post('/',
     }
 });
 
-usersRouter.patch('/:id',
+usersRouter.patch('/',
     passport.authenticate('jwt', {session: false}),
     async (req, res, next) =>{
     try{
-        const {id} = req.params;
+        const user = req.user;
         const body = req.body;
-        const user = await usersService.update(id,body);
-        res.status(200).json(user);
+        const updatedUser = await usersService.update(user.sub,body);
+        res.status(200).json(updatedUser);
     }catch(error){
         next(error);
     }
 });
 
-usersRouter.delete('/:id',
+usersRouter.delete('/',
     passport.authenticate('jwt', {session: false}),
     async (req, res, next) =>{
     try{
-        const { id } = req.params;
-        const user = await usersService.delete(id);
-        res.status(200).json(user);
+        const user = req.user;
+        const deletedUser = await usersService.delete(user.sub);
+        res.status(200).json(deletedUser);
     }catch(error){
         next(error);
     }
