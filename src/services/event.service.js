@@ -1,6 +1,11 @@
 import { models } from '../libs/sequelize.js';
 import  boom  from "@hapi/boom";
 import bcrypt from 'bcrypt';
+import { TagsService } from './tag.service.js';
+import { UsersService } from './user.service.js';
+
+const tagsService = new TagsService();
+const usersService = new UsersService();
 
 class EventsService{
     constructor(){
@@ -9,16 +14,48 @@ class EventsService{
         const event = await models.Event.create(body);        
         return event;
     }
+    async addTags(userId, eventId, tagIds){
+            const event = await this.findOne(eventId,userId);
+            for (const tagId of tagIds) {
+                await tagsService.findOne(tagId,userId);
+            }
+            await event.setTags(tagIds);
+            const rta = await this.update(eventId,event,userId);  
+            return rta;
+    }
+
+    async addParticipants(userId, eventId, participantIds){
+        const event = await this.findOne(eventId,userId);
+        for (const participantId of participantIds) {
+            await usersService.findOne(participantId,userId);
+        }
+        await event.setParticipants(participantIds);
+        const rta = await this.update(eventId,event,userId);  
+        return rta;
+}
 
     async find(){
         const rta = await models.Event.findAll({
             where:{
                  'isPublic':true
             },
-            include: ['user']
+            include: [{
+                model: models.User,
+                as: 'creator',
+                attributes: { exclude: ['password'] }
+            },
+            {
+                model: models.Tag,
+                as: 'tags'
+            },
+            {
+                model: models.User,
+                as: 'participants',
+                attributes: { exclude: ['password'] }
+            }]
         });
         const newRta = rta.map(event =>{
-            delete event.dataValues.user.dataValues.password;
+            delete event.dataValues.creator.dataValues.password;
         });
         return rta;
     }
@@ -29,12 +66,25 @@ class EventsService{
                 'id':id,
                 'userId':userId
             } ,        
-            include: ['user']
+            include: [{
+                model: models.User,
+                as: 'creator',
+                attributes: { exclude: ['password'] }
+            },
+            {
+                model: models.Tag,
+                as: 'tags'
+            },
+            {
+                model: models.User,
+                as: 'participants',
+                attributes: { exclude: ['password'] }
+            }]
         });
         if (!rta) {
             throw boom.notFound('event not found');
           }
-        delete rta.dataValues.user.dataValues.password;
+        delete rta.dataValues.creator.dataValues.password;
         return rta;
     }
 
@@ -43,10 +93,23 @@ class EventsService{
             where:{
                 'userId': userId
             },
-            include: ['user']
+            include: [{
+                model: models.User,
+                as: 'creator',
+                attributes: { exclude: ['password'] }
+            },
+            {
+                model: models.Tag,
+                as: 'tags'
+            },
+            {
+                model: models.User,
+                as: 'participants',
+                attributes: { exclude: ['password'] }
+            }]
         });
         const newRta = rta.map(event =>{
-            delete event.dataValues.user.dataValues.password;
+            delete event.dataValues.creator.dataValues.password;
         });
         return rta;
     }

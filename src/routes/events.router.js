@@ -41,6 +41,34 @@ eventsRouter.get('/:id',
     }
 });
 
+eventsRouter.post('/add-tags',
+    passport.authenticate('jwt', {session: false}),
+    async (req, res, next) =>{
+    try{
+        const user = req.user;
+        const { eventId, tagIds } = req.body;
+        const event = await eventsService.addTags(user.sub, eventId, tagIds);
+        const newEvent = await eventsService.findOne(eventId, user.sub);
+        res.status(200).json(newEvent);
+    }catch(error){
+        next(error);
+    }
+});
+
+eventsRouter.post('/add-participants',
+    passport.authenticate('jwt', {session: false}),
+    async (req, res, next) =>{
+    try{
+        const user = req.user;
+        const { eventId, participantIds } = req.body;
+        const event = await eventsService.addParticipants(user.sub, eventId, participantIds);
+        const newEvent = await eventsService.findOne(eventId, user.sub);
+        res.status(200).json(newEvent);
+    }catch(error){
+        next(error);
+    }
+});
+
 eventsRouter.post('/',
     passport.authenticate('jwt', {session: false}),
     async (req, res, next) =>{

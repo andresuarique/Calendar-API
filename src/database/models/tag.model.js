@@ -2,10 +2,10 @@ import { Model, DataTypes, Sequelize } from "sequelize";
 import  boom from "@hapi/boom";
 import { USER_TABLE } from "./user.model.js";
 
-const EVENT_TABLE = 'events';
-const EVENT_MODEL = 'Event';
+const TAG_TABLE = 'tags';
+const TAG_MODEL = 'Tag';
 
-const EventSchema ={
+const TagSchema ={
     id:{
         allowNull: false,
         autoIncrement: true,
@@ -23,7 +23,7 @@ const EventSchema ={
         onUpdate: 'CASCADE',
         onDelete: 'SET NULL'
     },
-    title:{
+    name:{
         allowNull: false,
         type: DataTypes.STRING
     },
@@ -31,21 +31,10 @@ const EventSchema ={
         allowNull: true,
         type: DataTypes.STRING
     },
-    startDate:{
-        allowNull: false,
-        type: DataTypes.DATE,
-        field: 'start_date',
-    },
-    endDate:{
-        allowNull: false,
-        type: DataTypes.DATE,
-        field: 'end_date',
-    },
-    isPublic:{
-        allowNull: false,
-        type: DataTypes.BOOLEAN,
-        field: 'id_public',
-        defaultValue: true
+    color:{
+        allowNull: true,
+        type: DataTypes.STRING,
+        defaultValue: '#FFFFFF'
     },
     createdAt:{
         allowNull: false,
@@ -55,34 +44,27 @@ const EventSchema ={
     }
 };
 
-class Event extends Model {
+class Tag extends Model {
     static associate(models){
         this.belongsTo(models.User, {
-            as: 'creator',
-            foreignKey: 'userId'
+            as: 'user',
         });
-        this.belongsToMany(models.Tag, {
+        this.belongsToMany(models.Event, {
             through: models.EventTag,
-            as: 'tags',
-            foreignKey: 'eventId',
-            otherKey: 'tagId'
-        });
-        this.belongsToMany(models.User, {
-            through: models.UserEvent,
-            as: 'participants',
-            foreignKey: 'eventId',
-            otherKey: 'userId'
+            as: 'events',
+            foreignKey: 'tagId',
+            otherKey: 'eventId'
         });
     }
 
     static config (sequelize){
         return{
             sequelize,
-            tableName: EVENT_TABLE,
-            modelName: EVENT_MODEL,
+            tableName: TAG_TABLE,
+            modelName: TAG_MODEL,
             timestamps: false
         }
     }
 }
 
-export { EVENT_TABLE, EventSchema, Event };
+export { TAG_TABLE, TagSchema, Tag };

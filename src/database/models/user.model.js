@@ -35,8 +35,18 @@ const UserSchema = {
 class User extends Model {
     static associate(models){
         this.hasMany(models.Event,{
-            as: 'events',
+            as: 'createdEvents',
             foreignKey: 'userId'
+        });
+        this.hasMany(models.Tag,{
+            as: 'tags',
+            foreignKey: 'userId'
+        });
+        this.belongsToMany(models.Event, {
+            through: models.UserEvent,
+            as: 'participatedEvents',
+            foreignKey: 'userId',
+            otherKey: 'eventId'
         });
     }
 

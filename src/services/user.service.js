@@ -18,12 +18,16 @@ constructor(){
     }
 
     async find(){
-        const rta = await models.User.findAll();
+        const rta = await models.User.findAll({
+            attributes: { exclude: ['password'] }
+        });
         return rta;
     }
 
     async findOne(id){
-        const rta = await models.User.findByPk(id);
+        const rta = await models.User.findByPk(id,{
+            attributes: { exclude: ['password'] }
+        });
         if (!rta) {
             throw boom.notFound('user not found');
           }
