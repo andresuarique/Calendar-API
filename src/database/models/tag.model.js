@@ -49,6 +49,12 @@ class Tag extends Model {
         this.belongsTo(models.User, {
             as: 'user',
         });
+        this.belongsToMany(models.Event, {
+            through: models.EventTag,
+            as: 'events',
+            foreignKey: 'tagId',
+            otherKey: 'eventId'
+        });
     }
 
     static config (sequelize){

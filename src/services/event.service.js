@@ -1,6 +1,9 @@
 import { models } from '../libs/sequelize.js';
 import  boom  from "@hapi/boom";
 import bcrypt from 'bcrypt';
+import { TagsService } from './tag.service.js';
+
+const tagsService = new TagsService();
 
 class EventsService{
     constructor(){
@@ -8,6 +11,15 @@ class EventsService{
     async create(body){
         const event = await models.Event.create(body);        
         return event;
+    }
+    async addTags(userId, eventId, tagIds){
+            const event = await this.findOne(eventId,userId);
+            for (const tagId of tagIds) {
+                await tagsService.findOne(tagId,userId);
+            }
+            await event.setTags(tagIds);
+            const rta = await this.update(eventId,event,userId);  
+            return rta;
     }
 
     async find(){
@@ -29,7 +41,7 @@ class EventsService{
                 'id':id,
                 'userId':userId
             } ,        
-            include: ['user']
+            include: ['user','tags']
         });
         if (!rta) {
             throw boom.notFound('event not found');

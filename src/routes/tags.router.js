@@ -9,10 +9,10 @@ const tagsService = new TagsService();
     //passport.authenticate('jwt', {session: false}),
     async (req, res, next) =>{
     try{        
-        const tags = await tagsService.find();
+        const tags = await tagsService.findByUser(user.sub);
         res.status(200).json(tags);
     }catch(error){
-        next(error);
+        next(error);s
     }    
 });*/
 
