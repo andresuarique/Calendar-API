@@ -35,6 +35,12 @@ const TagSchema ={
         allowNull: true,
         type: DataTypes.STRING,
         defaultValue: '#FFFFFF'
+    },
+    createdAt:{
+        allowNull: false,
+        type: DataTypes.DATE,
+        field: 'created_at',
+        defaultValue: Sequelize.NOW
     }
 };
 
