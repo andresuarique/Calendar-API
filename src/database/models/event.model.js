@@ -58,13 +58,20 @@ const EventSchema ={
 class Event extends Model {
     static associate(models){
         this.belongsTo(models.User, {
-            as: 'user',
+            as: 'creator',
+            foreignKey: 'userId'
         });
         this.belongsToMany(models.Tag, {
             through: models.EventTag,
             as: 'tags',
             foreignKey: 'eventId',
             otherKey: 'tagId'
+        });
+        this.belongsToMany(models.User, {
+            through: models.UserEvent,
+            as: 'participants',
+            foreignKey: 'eventId',
+            otherKey: 'userId'
         });
     }
 
