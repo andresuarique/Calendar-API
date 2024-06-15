@@ -38,6 +38,10 @@ class User extends Model {
             as: 'events',
             foreignKey: 'userId'
         });
+        this.hasMany(models.Tag,{
+            as: 'tags',
+            foreignKey: 'userId'
+        });
     }
 
     static config (sequelize){
